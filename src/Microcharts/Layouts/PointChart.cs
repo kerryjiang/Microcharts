@@ -59,6 +59,43 @@ namespace Microcharts
             this.DrawPoints(canvas, points);
             this.DrawFooter(canvas, points, itemSize, height, footerHeight);
             this.DrawValueLabel(canvas, points, itemSize, height, valueLabelSizes);
+            this.DrawAxisX(canvas, points, itemSize, width, height, footerHeight);
+        }
+
+        protected virtual void DrawAxisYArea(SKCanvas canvas, SKPoint[] points, SKSize itemSize, int width, int height, float footerHeight)
+        {
+
+        }
+
+        protected virtual void DrawAxisX(SKCanvas canvas, SKPoint[] points, SKSize itemSize, int width, int height, float footerHeight)
+        {
+            using (var paint = new SKPaint())
+            {
+                paint.Color = SKColors.Black;
+                paint.StrokeWidth = 1.5f;
+                paint.Style = SKPaintStyle.Stroke;
+
+                var y = height - footerHeight - this.Margin;
+
+                canvas.DrawLine(0, y, width, y, paint);
+
+                paint.StrokeWidth = 1f;
+
+                if (points.Length > 0)
+                {
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        var entry = this.Entries.ElementAt(i);
+                        var point = points[i];
+                        canvas.DrawLine(point.X, y, point.X, y - 5, paint);
+                    }
+                }
+            }
+        }
+
+        protected virtual void DrawAxisY(SKCanvas canvas)
+        {
+            
         }
 
         protected SKSize CalculateItemSize(int width, int height, float footerHeight, float headerHeight)
@@ -200,7 +237,7 @@ namespace Microcharts
                                 }
                                 else
                                 {
-                                    canvas.Translate(point.X, point.Y);
+                                    canvas.Translate(point.X - (bounds.Width / 2), point.Y - 5);
                                 }
 
                                 canvas.DrawText(text, 0, 0, paint);
@@ -217,7 +254,7 @@ namespace Microcharts
 
             if (this.Entries.Any(e => !string.IsNullOrEmpty(e.Label)))
             {
-                result += this.LabelTextSize + this.Margin;
+                result += this.LabelTextSize;
             }
 
             return result;

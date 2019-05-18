@@ -56,6 +56,7 @@ namespace Microcharts
             this.DrawPoints(canvas, points);
             this.DrawFooter(canvas, points, itemSize, height, footerHeight);
             this.DrawValueLabel(canvas, points, itemSize, height, valueLabelSizes);
+            this.DrawAxisX(canvas, points, itemSize, width, height, footerHeight);
         }
 
         /// <summary>
